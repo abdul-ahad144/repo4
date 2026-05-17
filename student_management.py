@@ -2,17 +2,19 @@ import streamlit as st
 import pandas as pd
 import os
 
-FILE = "students.csv"
+FILE = "data/dataset.csv"
 
 
 # ---------------------------------------------------
 # LOAD STUDENTS
 # ---------------------------------------------------
+
 def load_students():
 
     if not os.path.exists(FILE):
 
         df = pd.DataFrame(columns=[
+
             "Student_ID",
             "Name",
             "CGPA",
@@ -21,7 +23,19 @@ def load_students():
             "Company_Tier",
             "Skill_Programs",
             "Projects",
-            "Internships"
+            "Internships",
+
+            "Applied",
+            "Shortlisted",
+            "Interview_Attended",
+            "Offer_Received",
+            "Joined",
+            "Failed_Stage",
+            "Salary_LPA",
+            "Cleared_R1",
+            "Cleared_R2",
+            "Cleared_R3"
+
         ])
 
         df.to_csv(FILE, index=False)
@@ -32,19 +46,19 @@ def load_students():
 # ---------------------------------------------------
 # SAVE STUDENTS
 # ---------------------------------------------------
+
 def save_students(df):
 
     df.to_csv(FILE, index=False)
+
+    st.cache_data.clear()
 
 
 # ---------------------------------------------------
 # MAIN PAGE
 # ---------------------------------------------------
-def student_management_page():
 
-    # ---------------------------------------------------
-    # PAGE STYLE
-    # ---------------------------------------------------
+def student_management_page():
 
     st.markdown("""
     <style>
@@ -100,6 +114,7 @@ def student_management_page():
         if st.button("⬅ Back To Dashboard"):
 
             st.session_state.page = "dashboard"
+
             st.rerun()
 
     with col2:
@@ -107,7 +122,9 @@ def student_management_page():
         if st.button("🚪 Logout"):
 
             st.session_state.logged_in = False
+
             st.session_state.page = "landing"
+
             st.rerun()
 
     st.markdown("---")
@@ -204,7 +221,18 @@ def student_management_page():
                 "Company_Tier": company,
                 "Skill_Programs": skills,
                 "Projects": projects,
-                "Internships": internships
+                "Internships": internships,
+
+                "Applied": 1,
+                "Shortlisted": 1,
+                "Interview_Attended": 1,
+                "Offer_Received": 0,
+                "Joined": 0,
+                "Failed_Stage": "None",
+                "Salary_LPA": 0,
+                "Cleared_R1": 0,
+                "Cleared_R2": 0,
+                "Cleared_R3": 0
 
             }])
 
@@ -249,7 +277,7 @@ def student_management_page():
     st.markdown("</div>", unsafe_allow_html=True)
 
     # ===================================================
-    # STUDENT SEARCH
+    # SEARCH STUDENT
     # ===================================================
 
     st.markdown("<div class='section-box'>", unsafe_allow_html=True)
@@ -305,7 +333,7 @@ def student_management_page():
     st.download_button(
         "⬇ Download CSV",
         csv,
-        "students.csv",
+        "dataset.csv",
         "text/csv"
     )
 
