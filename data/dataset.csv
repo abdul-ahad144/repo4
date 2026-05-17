@@ -1,15 +1,35 @@
-import pandas as pd
-import streamlit as st
+# data/dataset.csv
 
-@st.cache_data
-def load_data():
-    url = "https://raw.githubusercontent.com/pragyanaischool/VTU_Internship_DataSets/refs/heads/main/student_data_placement_interview_funnel_analysis_project_10.csv"
-    
-    try:
-        df = pd.read_csv(url)
-    except:
-        df = pd.read_csv(url, encoding='latin1', on_bad_lines='skip')
-    
-    return df
-
-df = load_data()
+```csv
+Student_ID,Name,CGPA,Domain,Job_Role,Company_Tier,Skill_Programs,Projects,Internships,Applied,Shortlisted,Interview_Attended,Offer_Received,Joined,Failed_Stage,Salary_LPA,Cleared_R1,Cleared_R2,Cleared_R3
+ST001,Rahul Sharma,8.5,AI,ML Engineer,Tier 1,4,5,2,1,1,1,1,1,None,18,1,1,1
+ST002,Priya Verma,7.8,Web Development,Software Developer,Tier 2,3,4,1,1,1,1,1,1,None,10,1,1,0
+ST003,Aman Khan,6.9,Cyber Security,Tester,Tier 3,2,2,0,1,1,0,0,0,Interview,0,1,0,0
+ST004,Neha Gupta,9.1,Data Science,Data Analyst,Tier 1,5,6,3,1,1,1,1,1,None,22,1,1,1
+ST005,Arjun Patel,7.2,Cloud Computing,Cloud Engineer,Tier 2,2,3,1,1,1,1,0,0,Technical,0,1,0,0
+ST006,Sana Ali,8.8,Machine Learning,ML Engineer,Tier 1,4,5,2,1,1,1,1,1,None,20,1,1,1
+ST007,Karan Mehta,6.5,Web Development,Tester,Tier 3,1,2,0,1,0,0,0,0,Resume,0,0,0,0
+ST008,Anjali Singh,8.0,AI,Software Developer,Tier 2,3,4,1,1,1,1,1,1,None,12,1,1,0
+ST009,Vikram Reddy,7.4,Data Science,Data Analyst,Tier 2,2,3,1,1,1,1,0,0,HR,0,1,1,0
+ST010,Meera Joshi,9.3,Machine Learning,ML Engineer,Tier 1,5,7,3,1,1,1,1,1,None,24,1,1,1
+ST011,Faizan Ahmed,7.1,Cyber Security,Tester,Tier 3,2,2,1,1,1,0,0,0,Aptitude,0,0,0,0
+ST012,Ritika Das,8.4,Cloud Computing,Cloud Engineer,Tier 2,4,4,2,1,1,1,1,1,None,15,1,1,1
+ST013,Harsh Yadav,6.8,Web Development,Software Developer,Tier 3,2,2,0,1,1,1,0,0,Technical,0,1,0,0
+ST014,Simran Kaur,8.9,AI,ML Engineer,Tier 1,5,6,2,1,1,1,1,1,None,21,1,1,1
+ST015,Rohit Jain,7.6,Data Science,Data Analyst,Tier 2,3,3,1,1,1,1,1,1,None,11,1,1,0
+ST016,Pooja Nair,8.1,Machine Learning,Software Developer,Tier 2,4,4,2,1,1,1,1,1,None,14,1,1,1
+ST017,Aditya Roy,6.4,Cyber Security,Tester,Tier 3,1,1,0,1,0,0,0,0,Resume,0,0,0,0
+ST018,Nisha Kapoor,9.0,AI,ML Engineer,Tier 1,5,6,3,1,1,1,1,1,None,23,1,1,1
+ST019,Yash Thakur,7.3,Cloud Computing,Cloud Engineer,Tier 2,3,3,1,1,1,1,0,0,Technical,0,1,0,0
+ST020,Ayesha Siddiqui,8.2,Web Development,Software Developer,Tier 2,4,5,2,1,1,1,1,1,None,13,1,1,1
+ST021,Rajat Mishra,7.7,Data Science,Data Analyst,Tier 2,3,4,1,1,1,1,1,1,None,12,1,1,0
+ST022,Khushi Arora,8.6,Machine Learning,ML Engineer,Tier 1,5,5,2,1,1,1,1,1,None,19,1,1,1
+ST023,Imran Sheikh,6.7,Cyber Security,Tester,Tier 3,2,2,0,1,1,0,0,0,Interview,0,1,0,0
+ST024,Sneha Iyer,8.3,AI,Software Developer,Tier 2,4,4,2,1,1,1,1,1,None,16,1,1,1
+ST025,Manoj Kumar,7.0,Cloud Computing,Cloud Engineer,Tier 3,2,3,1,1,1,1,0,0,HR,0,1,1,0
+ST026,Divya Chawla,9.2,Data Science,Data Analyst,Tier 1,5,7,3,1,1,1,1,1,None,25,1,1,1
+ST027,Akash Bhat,7.5,Web Development,Software Developer,Tier 2,3,4,1,1,1,1,1,1,None,11,1,1,0
+ST028,Tanya Malhotra,8.7,Machine Learning,ML Engineer,Tier 1,5,6,2,1,1,1,1,1,None,20,1,1,1
+ST029,Sachin Rao,6.9,Cyber Security,Tester,Tier 3,2,1,0,1,0,0,0,0,Resume,0,0,0,0
+ST030,Isha Pandey,8.4,AI,ML Engineer,Tier 1,4,5,2,1,1,1,1,1,None,17,1,1,1
+```
