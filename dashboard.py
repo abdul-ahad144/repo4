@@ -3,33 +3,34 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from utils.metrics import interview_success_rate, round_efficiency
 
+DATA_FILE = "data/dataset.csv"
+
+
+# ---------------------------------------------------
+# LOAD DATA
+# ---------------------------------------------------
+
+@st.cache_data
+def load_data():
+
+    try:
+        df = pd.read_csv(DATA_FILE)
+
+    except:
+        df = pd.DataFrame()
+
+    return df
+
 
 def dashboard():
 
     st.title("PragyanAI Placement Intelligence Engine")
 
-    # ---------------------------------------------------
-    # LOAD DATA
-    # ---------------------------------------------------
-
-    @st.cache_data
-    def load_data():
-
-        url = "https://raw.githubusercontent.com/pragyanaischool/VTU_Internship_DataSets/refs/heads/main/student_data_placement_interview_funnel_analysis_project_10.csv"
-
-        try:
-            df = pd.read_csv(url)
-
-        except:
-            df = pd.read_csv(
-                url,
-                encoding='latin1',
-                on_bad_lines='skip'
-            )
-
-        return df
-
     df = load_data()
+
+    if df.empty:
+        st.warning("Dataset not found")
+        return
 
     df.columns = df.columns.str.strip()
 
@@ -43,39 +44,39 @@ def dashboard():
 
     domain = st.sidebar.multiselect(
         "Domain",
-        df["Domain"].unique()
+        df["Domain"].dropna().unique()
     )
 
     company = st.sidebar.multiselect(
         "Company Tier",
-        df["Company_Tier"].unique()
+        df["Company_Tier"].dropna().unique()
     )
 
     role = st.sidebar.multiselect(
         "Job Role",
-        df["Job_Role"].unique()
+        df["Job_Role"].dropna().unique()
     )
 
     # ---------------------------------------------------
     # APPLY FILTERS
     # ---------------------------------------------------
 
-    if st.sidebar.button("Apply Filters"):
+    if domain:
+        df = df[df["Domain"].isin(domain)]
 
-        if domain:
-            df = df[df["Domain"].isin(domain)]
+    if company:
+        df = df[df["Company_Tier"].isin(company)]
 
-        if company:
-            df = df[df["Company_Tier"].isin(company)]
-
-        if role:
-            df = df[df["Job_Role"].isin(role)]
+    if role:
+        df = df[df["Job_Role"].isin(role)]
 
     # ---------------------------------------------------
     # RESET FILTERS
     # ---------------------------------------------------
 
     if st.sidebar.button("Reset Filters"):
+
+        st.cache_data.clear()
 
         st.rerun()
 
@@ -129,9 +130,15 @@ def dashboard():
         f"{round_efficiency(df):.2%}"
     )
 
+    joined_value = (
+        df["Joined"].sum()
+        if "Joined" in df.columns
+        else 0
+    )
+
     col4.metric(
         "Placed",
-        df["Joined"].sum()
+        joined_value
     )
 
     # ---------------------------------------------------
@@ -173,9 +180,11 @@ def dashboard():
 
         st.subheader("🔥 Failure Stage Distribution")
 
-        failure_data = df["Failed_Stage"].value_counts()
+        if "Failed_Stage" in df.columns:
 
-        st.bar_chart(failure_data)
+            failure_data = df["Failed_Stage"].value_counts()
+
+            st.bar_chart(failure_data)
 
     # ---------------------------------------------------
     # TAB 3
@@ -193,17 +202,19 @@ def dashboard():
 
         st.subheader("💰 Salary Distribution")
 
-        fig, ax = plt.subplots()
+        if "Salary_LPA" in df.columns:
 
-        ax.hist(df["Salary_LPA"], bins=30)
+            fig, ax = plt.subplots()
 
-        ax.set_title("Salary Distribution")
+            ax.hist(df["Salary_LPA"], bins=30)
 
-        ax.set_xlabel("Salary (LPA)")
+            ax.set_title("Salary Distribution")
 
-        ax.set_ylabel("Frequency")
+            ax.set_xlabel("Salary (LPA)")
 
-        st.pyplot(fig)
+            ax.set_ylabel("Frequency")
+
+            st.pyplot(fig)
 
     # ---------------------------------------------------
     # TAB 4
@@ -291,7 +302,7 @@ def dashboard():
     st.download_button(
         "Download CSV",
         csv,
-        "data.csv"
+        "dataset.csv"
     )
 
     # ---------------------------------------------------
@@ -300,20 +311,22 @@ def dashboard():
 
     st.subheader("🏆 Top Students")
 
-    top = df.sort_values(
-        by="CGPA",
-        ascending=False
-    ).head(10)
+    if "CGPA" in df.columns:
 
-    top = top.drop(
-        columns=["Failed_Stage"],
-        errors="ignore"
-    )
+        top = df.sort_values(
+            by="CGPA",
+            ascending=False
+        ).head(10)
 
-    st.dataframe(
-        top,
-        hide_index=True
-    )
+        top = top.drop(
+            columns=["Failed_Stage"],
+            errors="ignore"
+        )
+
+        st.dataframe(
+            top,
+            hide_index=True
+        )
 
     # ---------------------------------------------------
     # INSIGHTS
